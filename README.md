@@ -40,7 +40,7 @@ python app.py
 
 Visit `http://localhost:5000` to see the website.
 
-### Changing which playlist you want to modify
+### Modifying which playlist you want to track
 
 Get the ID from spotify (format should be `https://open.spotify.com/playlist/{playlist_id}`) and change `DEFAULT_PLAYLIST_ID` in `spotify_fetcher.py`:
 
@@ -85,4 +85,5 @@ To manually update the playlist:
 
 - **No data showing**: Check that GitHub Actions ran successfully and committed data files
 - **API errors**: Verify your Spotify credentials are correct
+
 - **Deployment issues**: Check that all environment variables are set in your hosting platform -->
