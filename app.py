@@ -1,6 +1,7 @@
 import os
 import json
 import glob
+import hashlib
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 from spotify_fetcher import fetch_and_save_playlist
@@ -17,15 +18,17 @@ def generate_playlist_barcode(playlist_data):
     Generate a unique barcode/QR code for a playlist based on its data
     """
     rv = BytesIO()
-    # Use playlist name and date to generate a simple barcode string.
+
     name = playlist_data.get('name', 'PLAYLIST')
     date = playlist_data.get('timestamp')
-    barcode_data = f"{date}{name}".upper().replace(" ", "")
-    allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    barcode_data = "".join(c for c in barcode_data if c in allowed_chars)
+    unique_string = f"{date}{name}{playlist_data.get('id', '')}"
+    
+    hash_object = hashlib.md5(unique_string.encode())
+    hash_int = int(hash_object.hexdigest(), 16)
+    barcode_data = str(hash_int) * 3
+    barcode_data = barcode_data[:50]
+    print(barcode_data)
 
-    # # Truncate to 20 chars if too long
-    # barcode_data = barcode_data[:12]
     rv = BytesIO()
     writer_options = dict(
         background="", foreground="#00ff00", font_size=0, 
