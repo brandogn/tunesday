@@ -4,8 +4,41 @@ import glob
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 from spotify_fetcher import fetch_and_save_playlist
+# import qrcode
+# from qrcode.image.svg import SvgPathImage
+from io import BytesIO
+from barcode import Gs1_128
+from barcode.writer import SVGWriter
 
 app = Flask(__name__)
+
+def generate_playlist_barcode(playlist_data):
+    """
+    Generate a unique barcode/QR code for a playlist based on its data
+    """
+    rv = BytesIO()
+    # Use playlist name and date to generate a simple barcode string.
+    name = playlist_data.get('name', 'PLAYLIST')
+    date = playlist_data.get('timestamp')
+    barcode_data = f"{date}{name}".upper().replace(" ", "")
+    allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    barcode_data = "".join(c for c in barcode_data if c in allowed_chars)
+
+    # # Truncate to 20 chars if too long
+    # barcode_data = barcode_data[:12]
+    rv = BytesIO()
+    writer_options = dict(
+        background="", foreground="#00ff00", font_size=0, 
+        quiet_zone=0.0, module_width=.33, module_height=30.0)
+    Gs1_128(barcode_data, writer=SVGWriter()).write(rv, options=writer_options)
+    # Convert the BytesIO buffer to a string (SVG is XML)
+    rv.seek(0)
+    svg_xml = rv.read().decode("utf-8")
+    
+    unwanted_rect = '<rect width="100%" height="100%" style="fill:"/>'
+    svg_xml = svg_xml.replace(unwanted_rect, '')
+
+    return svg_xml
 
 def get_available_dates():
     """
@@ -61,7 +94,7 @@ def playlist(date):
     if not playlist_data:
         return render_template('error.html', message=f"Playlist data not found for date: {date}"), 404
     
-    return render_template('playlist.html', playlist=playlist_data)
+    return render_template('playlist.html', playlist=playlist_data, barcode=generate_playlist_barcode(playlist_data))
 
 @app.route('/current')
 def current():
@@ -75,13 +108,6 @@ def current():
     
     # Redirect to most recent date
     return playlist(dates[0])
-
-@app.errorhandler(404)
-def not_found(error):
-    """
-    Custom 404 Not Found handler
-    """
-    return render_template('error.html', message="404 Not Found"), 404
 
 
 # @app.route('/admin/update')
@@ -123,6 +149,13 @@ def not_found(error):
 #     """
 #     dates = get_available_dates()
 #     return jsonify({'dates': dates})
+
+@app.errorhandler(404)
+def not_found(error):
+    """
+    Custom 404 Not Found handler
+    """
+    return render_template('error.html', message="404 Not Found"), 404
 
 if __name__ == '__main__':
     # Create data directory if it doesn't exist

@@ -2,8 +2,8 @@ name: Update Playlist
 
 on:
   schedule:
-    # Run every Tuesday at 9:00 AM UTC
-    - cron: '0 9 * * 2'
+    # Run every Wednesday at 12:00 AM UTC
+    - cron: '0 0 * * 3'
   workflow_dispatch: # Allow manual triggering
 
 jobs:

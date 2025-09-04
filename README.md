@@ -15,11 +15,12 @@ SPOTIFY_CLIENT_SECRET=your_client_secret_here
 
 ### 2. Install Dependencies
 
+Install all python requirements:
 ```
 pip install -r requirements.txt
 ```
 
-In a virtual python enviornment (recommendend):
+Alternatively in a virtual python enviornment (recommendend):
 ```bash
 VENV=.venv
 python -m venv $VENV

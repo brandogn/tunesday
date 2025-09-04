@@ -4,9 +4,9 @@
 
 {% block content %}
 <div class="container">
-    <p>{{ playlist.name }}, {{ playlist.date }}:</p>
+    <div class="container-content">
+        <p>{{ playlist.name }}, {{ playlist.date }}:</p>
 
-    <p>
         {% for track in playlist.tracks %}
         <div class="flex-row">
             <span class="left">{{ track.position }} {{ track.artists }} - {{ track.name }}</span>
@@ -16,15 +16,21 @@
             </span>
         </div>
         {% endfor %}
-    </p>
-    
+    </div>
 
-    <p>
+
+    <div class="container-content" >
+        <div style="width: 100%; overflow-x: auto;" class="barcode">
+                {{ barcode | safe }}
+        </div>
+        <div>barcode does nothing. maybe put something here<br>like an event flyer ? idk</div>
+        <br>
         <div class="flex-row">
             <span class="left">{{ playlist.timestamp[:19] }} | {{ playlist.total_tracks }} tracks</span>
-            <span class="right">Open in: <a href="{{ playlist.playlist_url }}" target="_blank" class="playlist-link">Spotify</a></span>
+            <span class="right">Open in: <a href="{{ playlist.playlist_url }}" target="_blank"
+                    class="playlist-link">Spotify</a></span>
         </div>
         <a href="/" class="back-link">← Back to Archive</a>
-    </p>
+    </div>
 </div>
 {% endblock %}
