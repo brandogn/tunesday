@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Archive - Tunesday{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Playlist Archive</h2>
+    
+    {% if dates %}
+        <div class="dates-list">
+            {% for date in dates %}
+                <div class="date-item">
+                    <a href="/playlist/{{ date }}" class="date-link">
+                        {{ date }} →
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-data">
+            <p>No playlist data available yet.</p>
+            <p>Check back after the first Tuesday update!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+
+
+
+main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+body {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+    color: #00ff00;
+    background-color: #000;
+}
+
+a,
+a:visited {
+    color: #00aaff !important;
+}
+
+.flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    text-align: left;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 1rem;
+}
+
+.right {
+    text-align: right;
+}
+
+/* Hide right section on screens 400px and below */
+@media (max-width: 400px) {
+    .width-check {
+        display: none;
+    }
+}
+

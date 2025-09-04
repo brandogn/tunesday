@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ playlist.date }} - Tunesday{% endblock %}
+
+{% block content %}
+<div class="container">
+    <p>{{ playlist.name }}, {{ playlist.date }}:</p>
+
+    <p>
+        {% for track in playlist.tracks %}
+        <div class="flex-row">
+            <span class="left">{{ track.position }} {{ track.artists }} - {{ track.name }}</span>
+            <span class="right width-check">
+                {{ track.duration_formatted }} |
+                <a href="{{ track.spotify_url }}" target="_blank" class="spotify-link">🎵</a>
+            </span>
+        </div>
+        {% endfor %}
+    </p>
+    
+
+    <p>
+        <div class="flex-row">
+            <span class="left">{{ playlist.timestamp[:19] }} | {{ playlist.total_tracks }} tracks</span>
+            <span class="right">Open in: <a href="{{ playlist.playlist_url }}" target="_blank" class="playlist-link">Spotify</a></span>
+        </div>
+        <a href="/" class="back-link">← Back to Archive</a>
+    </p>
+</div>
+{% endblock %}
